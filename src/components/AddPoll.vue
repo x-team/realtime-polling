@@ -93,6 +93,7 @@ export default {
           votes: 0,
         },
       };
+
     },
     removePoll: (poll) => {
       polls.child(poll['.key']).remove();
