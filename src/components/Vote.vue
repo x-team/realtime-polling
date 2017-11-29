@@ -1,5 +1,6 @@
 <template>
   <div class="hello">
+    This is a change proposed in PR but not yet merged
   </div>
 </template>
 <script>
