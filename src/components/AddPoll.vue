@@ -12,7 +12,7 @@
         <el-button type="primary" @click="onSubmit">Add Poll</el-button>
       </el-form-item>
     </el-form>
-    <ul class="polls">
+    <ul class="polls" v-loading="isLoading" :data="polls">
       <li v-for="poll in polls">
         <el-card class="box-card">
           <div slot="header" class="clearfix">
@@ -58,6 +58,7 @@ export default {
   name: 'AddPoll',
   data() {
     return {
+      isLoading: true,
       poll: {
         first: {
           value: '',
@@ -71,11 +72,27 @@ export default {
     };
   },
   firebase: {
-    polls,
+    polls: {
+      source: polls,
+      readyCallback: function () { // eslint-disable-line
+        this.isLoading = false;
+      },
+    },
   },
   methods: {
     onSubmit() {
       polls.push(this.poll);
+
+      this.poll = {
+        first: {
+          value: '',
+          votes: 0,
+        },
+        second: {
+          value: '',
+          votes: 0,
+        },
+      };
     },
     removePoll: (poll) => {
       polls.child(poll['.key']).remove();
@@ -84,6 +101,9 @@ export default {
 };
 </script>
 <style scoped>
+h1, h2, h3 {
+  margin: 0;
+}
 .polls {
   max-width: 600px;
   margin: auto;
@@ -91,7 +111,6 @@ export default {
 }
 .grid-content {
   border-radius: 4px;
-  min-height: 36px;
 }
 .box-card {
   margin: 10px;
@@ -104,6 +123,7 @@ export default {
 }
 .bar {
   height: 20px;
+  margin-top: 5px;
 }
 .bar-container {
   display: flex;
