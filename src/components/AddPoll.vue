@@ -1,17 +1,50 @@
 <template>
-  <div class="hello">
+  <div class="add-poll">
     <h1>Add new poll!</h1>
-    <input
-      v-model.trim="pollFirstOption"
-      placeholder="First Option"
-    >
-    <input
-      v-model.trim="pollSecondOption"
-      placeholder="Second Option"
-    >
-    <ul>
+    <el-form :inline="true" :model="poll" class="demo-form-inline">
+      <el-form-item>
+        <el-input v-model="poll.first.value" placeholder="First Option"></el-input>
+      </el-form-item>
+       <el-form-item>
+        <el-input v-model="poll.second.value" placeholder="Second Option"></el-input>
+      </el-form-item>
+      <el-form-item>
+        <el-button type="primary" @click="onSubmit">Add Poll</el-button>
+      </el-form-item>
+    </el-form>
+    <ul class="polls">
       <li v-for="poll in polls">
-        <button @click="removePoll(poll)">X</button>
+        <el-card class="box-card">
+          <div slot="header" class="clearfix">
+            <span>Poll</span>
+            <el-button style="float: right; padding: 3px 0" type="text" @click="removePoll(poll)">Remove poll</el-button>
+          </div>
+          <el-row>
+            <el-col :span="12">
+              <h2 class="grid-content">
+                {{ poll.first.value }}
+              </h2>
+              <h3 class="grid-content">
+                {{ poll.first.votes }} votes
+              </h3>
+            </el-col>
+            <el-col :span="12">
+              <h2 class="grid-content">
+                {{ poll.second.value }}
+              </h2>
+              <h3 class="grid-content">
+                {{ poll.second.votes }} votes
+              </h3>
+            </el-col>
+            <el-col :span="24" class="bar-container" v-if="poll.first.votes + poll.first.votes != 0">
+                <div v-bind:style="{width: poll.first.votes / (poll.first.votes + poll.second.votes) * 100 + '%' }" class="bar bg-red"/>
+                <div v-bind:style="{width: poll.second.votes / (poll.first.votes + poll.second.votes) * 100 + '%' }" class="bar bg-blue"/>
+            </el-col>
+            <div v-else>
+              <h2>No votes yet</h2>
+            </div>
+          </el-row>
+        </el-card>
       </li>
     </ul>
   </div>
@@ -25,23 +58,24 @@ export default {
   name: 'AddPoll',
   data() {
     return {
-      pollFirstOption: '',
-      pollSecondOption: '',
+      poll: {
+        first: {
+          value: '',
+          votes: 0,
+        },
+        second: {
+          value: '',
+          votes: 0,
+        },
+      },
     };
   },
   firebase: {
     polls,
   },
   methods: {
-    addPoll: () => {
-      if (this.pollFirstOption && this.pollSecondOption) {
-        polls.push({
-          firstOption: this.pollFirstOption,
-          secondOption: this.pollSecondOption,
-        });
-        this.pollFirstOption = '';
-        this.pollSecondOption = '';
-      }
+    onSubmit() {
+      polls.push(this.poll);
     },
     removePoll: (poll) => {
       polls.child(poll['.key']).remove();
@@ -49,3 +83,29 @@ export default {
   },
 };
 </script>
+<style scoped>
+.polls {
+  max-width: 600px;
+  margin: auto;
+  list-style: none;
+}
+.grid-content {
+  border-radius: 4px;
+  min-height: 36px;
+}
+.box-card {
+  margin: 10px;
+}
+.bg-red {
+  background-color: #409EFF;
+}
+.bg-blue {
+  background-color: #67C23A;
+}
+.bar {
+  height: 20px;
+}
+.bar-container {
+  display: flex;
+}
+</style>
