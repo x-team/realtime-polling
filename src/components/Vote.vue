@@ -1,5 +1,6 @@
 <template>
   <div class="hello">
+    <p>Test for app preview on PR.</p>
   </div>
 </template>
 <script>
