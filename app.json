@@ -1,12 +1,18 @@
 {
   "name": "realtime-polling",
   "scripts": {},
-  "env": {},
+  "env": {
+    "NPM_CONFIG_PRODUCTION": "false",
+    "NODE_ENV": "development"
+  },
   "formation": {},
   "addons": [],
   "buildpacks": [
     {
       "url": "heroku/nodejs"
+    },
+    {
+      "url": "https://github.com/hone/heroku-buildpack-static"
     }
   ]
 }
