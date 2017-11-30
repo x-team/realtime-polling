@@ -41,7 +41,7 @@
                 <div v-bind:style="{width: poll.second.votes / (poll.first.votes + poll.second.votes) * 100 + '%' }" class="bar bg-blue"/>
             </el-col>
             <div v-else>
-              <h2>No votes yet</h2>
+              <h3>No votes yet</h3>
             </div>
           </el-row>
         </el-card>
