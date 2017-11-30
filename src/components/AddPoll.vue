@@ -13,7 +13,7 @@
       </el-form-item>
     </el-form>
     <ul class="polls" v-loading="isLoading" :data="polls">
-      <li v-for="poll in polls">
+      <li v-for="poll in polls" v-bind:key="poll.id" >
         <el-card class="box-card">
           <div slot="header" class="clearfix">
             <span>Poll</span>
@@ -74,7 +74,7 @@ export default {
   firebase: {
     polls: {
       source: polls,
-      readyCallback: function () { // eslint-disable-line
+      readyCallback() {
         this.isLoading = false;
       },
     },
