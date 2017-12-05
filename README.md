@@ -39,5 +39,5 @@ s3-website create <desired.bucket.name>
 ### Deployment
 
 ```bash
-npm run build && s3-website ./dist
+npm run build && s3-website deploy ./dist
 ```
