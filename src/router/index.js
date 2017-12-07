@@ -11,7 +11,7 @@ Vue.use(ElementUI);
 export default new Router({
   routes: [
     {
-      path: '/',
+      path: '/vote/:id',
       name: 'Vote',
       component: Vote,
     }, {
