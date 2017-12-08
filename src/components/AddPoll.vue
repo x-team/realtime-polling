@@ -31,7 +31,7 @@
 </template>
 <script>
 import db from '../services/firebase';
-import Results from './Results.vue';
+import Results from './Results';
 
 const polls = db.ref('/');
 

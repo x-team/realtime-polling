@@ -38,7 +38,7 @@ export default {
   firebase() {
     return {
       poll: {
-        source: db.ref().child(`/${this._props.pollId}`),
+        source: db.ref().child(`/${this.pollId}`),
         asObject: true,
         readyCallback() {
           this.isLoading = false;
