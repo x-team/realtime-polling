@@ -13,9 +13,7 @@
 </template>
 <script>
 import db from '../services/firebase';
-import Results from './Results.vue';
-
-const polls = db.ref('/');
+import Results from './Results';
 
 export default {
   name: 'Vote',
@@ -28,25 +26,29 @@ export default {
   components: {
     Results,
   },
-  firebase: {
-    polls: {
-      source: polls,
-      readyCallback() {
-        this.isLoading = false;
-        this.poll = this.polls.filter(poll => poll['.key'] === this.$route.params.id)[0];
+  firebase() {
+    return {
+      poll: {
+        source: db.ref().child(`/${this.$route.params.id}`),
+        asObject: true,
+        readyCallback() {
+          this.isLoading = false;
+        },
       },
-    },
+    };
   },
   methods: {
     vote(poll, choice) {
+      const dbRef = db.ref().child(`/${this.$route.params.id}`);
       this.isVoted = true;
 
-      this.poll[choice].votes += 1;
-
-      db.ref(`/${this.$route.params.id}/${choice}`).set({
-        votes: poll[choice].votes,
-        value: poll[choice].value,
-      });
+      dbRef.transaction(pollRef => ({
+        ...pollRef,
+        [choice]: {
+          value: pollRef[choice].value,
+          votes: pollRef[choice].votes + 1,
+        },
+      }));
     },
   },
 };
