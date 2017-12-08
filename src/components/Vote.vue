@@ -6,7 +6,7 @@
         <el-button type="text" @click="vote(poll, 'second')">{{poll.second.value}}</el-button>
       </div>
       <el-row v-else>
-        <results :poll="poll"></results>
+        <results :pollId="poll['.key']"></results>
       </el-row>
     </el-card>
   </div>

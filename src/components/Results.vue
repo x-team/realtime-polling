@@ -1,31 +1,51 @@
 <template>
-  <div>
-    <el-col :span="12">
-      <h2 class="grid-content">
-        {{ poll.first.value }}
-      </h2>
-      <h3 class="grid-content">
-        {{ poll.first.votes }} votes
-      </h3>
-    </el-col>
-    <el-col :span="12">
-      <h2 class="grid-content">
-        {{ poll.second.value }}
-      </h2>
-      <h3 class="grid-content">
-        {{ poll.second.votes }} votes
-      </h3>
-    </el-col>
-    <el-col :span="24" class="bar-container">
-      <div v-bind:style="{width: poll.first.votes / (poll.first.votes + poll.second.votes) * 100 + '%' }" class="bar bg-red"/>
-      <div v-bind:style="{width: poll.second.votes / (poll.first.votes + poll.second.votes) * 100 + '%' }" class="bar bg-blue"/>
-    </el-col>
+  <div v-loading="isLoading">
+    <div v-if="!this.isLoading">
+      <el-col :span="12">
+        <h2 class="grid-content">
+          {{ poll.first.value }}
+        </h2>
+        <h3 class="grid-content">
+          {{ poll.first.votes }} votes
+        </h3>
+      </el-col>
+      <el-col :span="12">
+        <h2 class="grid-content">
+          {{ poll.second.value }}
+        </h2>
+        <h3 class="grid-content">
+          {{ poll.second.votes }} votes
+        </h3>
+      </el-col>
+      <el-col :span="24" class="bar-container">
+        <div v-bind:style="{width: poll.first.votes / (poll.first.votes + poll.second.votes) * 100 + '%' }" class="bar bg-red"/>
+        <div v-bind:style="{width: poll.second.votes / (poll.first.votes + poll.second.votes) * 100 + '%' }" class="bar bg-blue"/>
+      </el-col>
+    </div>
   </div>
 </template>
 <script>
+import db from '../services/firebase';
+
 export default {
   name: 'results',
-  props: ['poll'],
+  props: ['pollId'],
+  data() {
+    return {
+      isLoading: true,
+    };
+  },
+  firebase() {
+    return {
+      poll: {
+        source: db.ref().child(`/${this._props.pollId}`),
+        asObject: true,
+        readyCallback() {
+          this.isLoading = false;
+        },
+      },
+    };
+  },
 };
 </script>
 <style scoped>

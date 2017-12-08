@@ -21,7 +21,7 @@
             <el-button style="float: right; padding: 3px" type="text" @click="getPollLink(poll)">Get Link</el-button>
           </div>
           <el-row>
-            <results :poll="poll"></results>
+            <results :pollId="poll['.key']"></results>
             <a :href="`/#/vote/${poll['.key']}`" target="_blank">Open Poll</a>
           </el-row>
         </el-card>
