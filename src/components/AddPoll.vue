@@ -17,32 +17,12 @@
         <el-card class="box-card">
           <div slot="header" class="clearfix">
             <span>Poll</span>
-            <el-button style="float: right; padding: 3px 0" type="text" @click="removePoll(poll)">Remove poll</el-button>
+            <el-button style="float: right; padding: 3px" type="text" @click="removePoll(poll)">Remove poll</el-button>
+            <el-button style="float: right; padding: 3px" type="text" @click="getPollLink(poll)">Get Link</el-button>
           </div>
           <el-row>
-            <el-col :span="12">
-              <h2 class="grid-content">
-                {{ poll.first.value }}
-              </h2>
-              <h3 class="grid-content">
-                {{ poll.first.votes }} votes
-              </h3>
-            </el-col>
-            <el-col :span="12">
-              <h2 class="grid-content">
-                {{ poll.second.value }}
-              </h2>
-              <h3 class="grid-content">
-                {{ poll.second.votes }} votes
-              </h3>
-            </el-col>
-            <el-col :span="24" class="bar-container" v-if="poll.first.votes + poll.first.votes != 0">
-                <div v-bind:style="{width: poll.first.votes / (poll.first.votes + poll.second.votes) * 100 + '%' }" class="bar bg-red"/>
-                <div v-bind:style="{width: poll.second.votes / (poll.first.votes + poll.second.votes) * 100 + '%' }" class="bar bg-blue"/>
-            </el-col>
-            <div v-else>
-              <h3>No votes yet</h3>
-            </div>
+            <results :pollId="poll['.key']"></results>
+            <a :href="`/#/vote/${poll['.key']}`" target="_blank">Open Poll</a>
           </el-row>
         </el-card>
       </li>
@@ -51,6 +31,7 @@
 </template>
 <script>
 import db from '../services/firebase';
+import Results from './Results';
 
 const polls = db.ref('/');
 
@@ -60,6 +41,7 @@ export default {
     return {
       isLoading: true,
       poll: {
+        isOpen: true,
         first: {
           value: '',
           votes: 0,
@@ -70,6 +52,9 @@ export default {
         },
       },
     };
+  },
+  components: {
+    Results,
   },
   firebase: {
     polls: {
@@ -109,23 +94,7 @@ h1, h2, h3 {
   margin: auto;
   list-style: none;
 }
-.grid-content {
-  border-radius: 4px;
-}
 .box-card {
   margin: 10px;
-}
-.bg-red {
-  background-color: #409EFF;
-}
-.bg-blue {
-  background-color: #67C23A;
-}
-.bar {
-  height: 20px;
-  margin-top: 5px;
-}
-.bar-container {
-  display: flex;
 }
 </style>
