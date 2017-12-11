@@ -4,6 +4,7 @@ import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 import Vote from '@/components/Vote';
 import AddPoll from '@/components/AddPoll';
+import CreatePoll from '@/components/CreatePoll';
 
 Vue.use(Router);
 Vue.use(ElementUI);
@@ -18,6 +19,10 @@ export default new Router({
       path: '/add',
       name: 'AddPoll',
       component: AddPoll,
+    }, {
+      path: '/create',
+      name: 'CreatePoll',
+      component: CreatePoll,
     },
   ],
 });
