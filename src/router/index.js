@@ -6,6 +6,8 @@ import Vote from '@/components/Vote';
 import AddPoll from '@/components/AddPoll';
 import CreatePoll from '@/components/CreatePoll';
 import ManagePoll from '@/components/ManagePoll';
+import VoteNew from '@/components/VoteNew';
+
 
 Vue.use(Router);
 Vue.use(ElementUI);
@@ -28,6 +30,11 @@ export default new Router({
       path: '/polls/:id',
       name: 'ManagePoll',
       component: ManagePoll,
+    },
+    {
+      path: '/vote-new/:id',
+      name: 'VoteNew',
+      component: VoteNew,
     },
   ],
 });

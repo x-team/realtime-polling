@@ -1,7 +1,7 @@
 <template>
   <div class="poll" v-loading="isLoading">
     <h2>Add question</h2>
-    <h3><a :href="`#/vote/${poll.id}`">Vote</a></h3>
+    <h3><a :href="`#/vote-new/${poll.id}`">Vote</a></h3>
     <el-form :inline="true" :model="question" class="demo-form-inline" v-if="!this.isLoading">
       <el-form-item>
         <el-input v-model="question.first.value" placeholder="Option A"></el-input>
@@ -16,7 +16,7 @@
     </el-form>
     <ul class="polls" v-loading="isLoading" v-if="poll.hasQuestions">
       <li v-for="question in reverseItems">
-        <el-card class="box-card">
+        <el-card class="box-card" v-bind:class="{ active: question.isActive }">
           <el-row>
             {{ question.first.value }} or {{ question.second.value }}
           </el-row>
@@ -39,6 +39,7 @@ export default {
     return {
       isLoading: true,
       question: {
+        isActive: true,
         first: {
           value: '',
           votes: 0,
@@ -75,6 +76,9 @@ export default {
         this.poll.hasQuestions = true;
         this.poll.questions = [];
       }
+      for (let i=0;i<this.poll.questions.length;i+=1) {
+        this.poll.questions[i].isActive = false;
+      }
       this.poll.questions.push(this.question);
       polls.child(this.poll.id).set({
         id: this.poll.id,
@@ -85,6 +89,7 @@ export default {
       });
 
       this.question = {
+        isActive: true,
         first: {
           value: '',
           votes: 0,
@@ -111,5 +116,9 @@ export default {
 }
 .box-card {
   margin: 10px;
+}
+
+.active {
+  background-color: #98FB98;
 }
 </style>
