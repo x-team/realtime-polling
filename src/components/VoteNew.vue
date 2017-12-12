@@ -2,9 +2,9 @@
   <div class="poll" v-loading="isLoading">
     <el-card class="box-card" v-if="!this.isLoading">
       <div v-if="!this.isVoted">
-        <el-button type="text" @click="vote(poll, 'first')">{{activeQuestion.first.value}}</el-button>
+        <el-button type="text" @click="vote(activeQuestion, 'first')">{{activeQuestion.first.value}}</el-button>
         <span>or</span>
-        <el-button type="text" @click="vote(poll, 'second')">{{activeQuestion.second.value}}</el-button>
+        <el-button type="text" @click="vote(activeQuestion, 'second')">{{activeQuestion.second.value}}</el-button>
       </div>
       <el-row v-else>
         <results :pollId="poll['.key']"></results>
@@ -40,12 +40,11 @@ export default {
   },
   computed: {
     activeQuestion() {
-      const active = this.poll.questions.filter(question => (question.isActive));
-      return active[0];
+      return this.poll.questions.filter(question => (question.isActive))[0];
     },
   },
   methods: {
-    vote(poll, choice) {
+    vote(question, choice) {
       const dbRef = db.ref().child(`/${this.$route.params.id}`);
       this.isVoted = true;
 
