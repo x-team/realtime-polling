@@ -8,38 +8,16 @@
         <el-button type="primary" @click="createPoll">Activate</el-button>
       </el-form-item>
     </el-form>
-    <h3>TODO:Link should be generated on refresh</h3>
+    <h3>http://localhost:8080/#/votes/{{ poll.id }}</h3>
     <p>This is your share link</p>
-
-    <el-form :inline="true" :model="question" class="demo-form-inline">
-      <el-form-item>
-        <el-input v-model="question.first.value" placeholder="Option A"></el-input>
-      </el-form-item>
-      OR
-       <el-form-item>
-        <el-input v-model="question.second.value" placeholder="Option B"></el-input>
-      </el-form-item>
-      <el-form-item>
-        <el-button type="primary" @click="addQuestion">Publish</el-button>
-      </el-form-item>
-    </el-form>
-    <ul class="polls">
-      <li v-for="question in poll.questions">
-        <el-card class="box-card">
-          <div slot="header" class="clearfix">
-            <el-button style="float: right; padding: 3px" type="text">Remove question</el-button>
-          </div>
-          <el-row>
-            <ResultsNew></ResultsNew>
-          </el-row>
-        </el-card>
-      </li>
-    </ul>
   </div>
 </template>
 <script>
 
 import ResultsNew from './ResultsNew';
+import db from '../services/firebase';
+
+const polls = db.ref('/');
 
 export default {
   name: 'CreatePoll',
@@ -47,33 +25,32 @@ export default {
     return {
       isLoading: true,
       poll: {
+        id: polls.push().key,
         name: '',
         url: '',
         isActive: false,
+        hasQuestions: false,
         questions: [],
-      },
-      question: {
-        first: {
-          value: '',
-          votes: 0,
-        },
-        second: {
-          value: '',
-          votes: 0,
-        },
       },
     };
   },
   components: {
     ResultsNew,
   },
+  firebase: {
+    polls: {
+      source: polls,
+      readyCallback() {
+        this.isLoading = false;
+      },
+    },
+  },
   methods: {
     createPoll() {
-      // eslint-disable-next-line
-      // console.log(polls)
-    },
-    addQuestion() {
-      this.poll.questions.push(this.question);
+      this.poll.url = `/polls/${this.poll.id}`;
+      this.poll.isActive = true;
+      polls.child(this.poll.id).set(this.poll);
+      this.$router.push(this.poll.url);
     },
   },
 };

@@ -22,11 +22,25 @@
 </template>
 <script>
 
+import db from '../services/firebase';
+
 export default {
   name: 'ResultsNew',
+  props: ['pollId', 'questionId'],
   data() {
     return {
       isLoading: false,
+    };
+  },
+  firebase() {
+    return {
+      poll: {
+        source: db.ref().child(`/${this.pollId}`),
+        asObject: true,
+        readyCallback() {
+          this.isLoading = false;
+        },
+      },
     };
   },
 };
