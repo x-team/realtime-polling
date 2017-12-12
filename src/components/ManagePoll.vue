@@ -1,7 +1,7 @@
 <template>
   <div class="poll" v-loading="isLoading">
-    <h1>Add question</h1>
-
+    <h2>Add question</h2>
+    <h3><a :href="`#/vote/${poll.id}`">Vote</a></h3>
     <el-form :inline="true" :model="question" class="demo-form-inline" v-if="!this.isLoading">
       <el-form-item>
         <el-input v-model="question.first.value" placeholder="Option A"></el-input>
@@ -79,7 +79,6 @@ export default {
       polls.child(this.poll.id).set({
         id: this.poll.id,
         name: this.poll.name,
-        url: this.poll.url,
         isActive: this.poll.isActive,
         hasQuestions: this.poll.hasQuestions,
         questions: this.poll.questions,

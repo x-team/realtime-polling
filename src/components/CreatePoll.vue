@@ -27,7 +27,6 @@ export default {
       poll: {
         id: polls.push().key,
         name: '',
-        url: '',
         isActive: false,
         hasQuestions: false,
         questions: [],
@@ -47,10 +46,9 @@ export default {
   },
   methods: {
     createPoll() {
-      this.poll.url = `/polls/${this.poll.id}`;
       this.poll.isActive = true;
       polls.child(this.poll.id).set(this.poll);
-      this.$router.push(this.poll.url);
+      this.$router.push(`/polls/${this.poll.id}`);
     },
   },
 };
