@@ -9,9 +9,9 @@
       </el-form-item>
     </el-form>
     <h3>{{ this.voteUrl }}</h3>
-    <el-button type="primary" @click="copyToClipboard">Copy URL to clipboard</el-button>
-    <p><a :href="this.voteUrl" target="_blank" @click="copyToClipboard">Open</a></p>
     <p>This is your share link</p>
+    <el-button type="primary" @click="copyToClipboard">Copy URL to clipboard</el-button>
+    <el-button type="primary" @click="openVotingView">Open</el-button>
   </div>
 </template>
 <script>
@@ -56,6 +56,9 @@ export default {
     },
     copyToClipboard() {
       copy(this.voteUrl);
+    },
+    openVotingView() {
+      window.open(this.voteUrl, '_blank');
     },
   },
 };

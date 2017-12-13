@@ -38,7 +38,7 @@ export default {
         readyCallback() {
           const pollRef = db.ref().child(`/${this.$route.params.id}`);
           pollRef.on('value', (snapshot) => {
-            if (snapshot.val().questions && snapshot.val().questions.length > 0) {
+            if (snapshot.val() && snapshot.val().questions && snapshot.val().questions.length > 0) {
               this.isLoading = false;
               if (this.poolOFQuestions !== snapshot.val().questions.length) {
                 this.poolOFQuestions = snapshot.val().questions.length;
