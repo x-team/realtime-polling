@@ -8,7 +8,8 @@
         <el-button type="primary" @click="createPoll">Activate</el-button>
       </el-form-item>
     </el-form>
-    <h3>{{ this.hostUrl }}</h3>
+    <h3>{{ this.voteUrl }}</h3>
+    <p><a :href="this.voteUrl" target="_blank">open</a></p>
     <p>This is your share link</p>
   </div>
 </template>
@@ -34,7 +35,7 @@ export default {
     };
   },
   computed: {
-    hostUrl() {
+    voteUrl() {
       return `${location.href}vote-new/${this.poll.id}`;
     },
   },

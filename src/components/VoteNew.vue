@@ -1,6 +1,6 @@
 <template>
   <div class="poll" v-loading="isLoading">
-    <el-card class="box-card" v-if="!this.isLoading">
+    <el-card class="box-card" v-if="!this.isLoading && activeQuestion">
       <div v-if="!this.isVoted">
         <el-button type="text" @click="vote(activeQuestion, 'first')">{{activeQuestion.first.value}}</el-button>
         <span>or</span>
@@ -10,6 +10,7 @@
         <ResultsNew :pollId="poll['.key']"></ResultsNew>
       </el-row>
     </el-card>
+    <div v-else>Please wait for first question.</div>
   </div>
 </template>
 <script>
@@ -34,14 +35,20 @@ export default {
         source: db.ref().child(`/${this.$route.params.id}`),
         asObject: true,
         readyCallback() {
-          this.isLoading = false;
+          const pollRef = db.ref().child(`/${this.$route.params.id}`);
+          pollRef.on('value', (snapshot) => {
+            if (snapshot.val().questions && snapshot.val().questions.length > 0) {
+              this.isLoading = false;
+            }
+          });
         },
       },
     };
   },
   computed: {
     activeQuestion() {
-      return this.poll.questions.filter(question => (question.isActive))[0];
+      return (this.poll.questions) ?
+        this.poll.questions.filter(question => (question.isActive))[0] : null;
     },
   },
   methods: {
