@@ -13,9 +13,10 @@
   </div>
 </template>
 <script>
+
 import db from '../services/firebase';
 import ResultsNew from './ResultsNew';
-/* eslint-disable */
+
 export default {
   name: 'VoteNew',
   data() {

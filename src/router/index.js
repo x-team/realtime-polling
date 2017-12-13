@@ -8,7 +8,6 @@ import CreatePoll from '@/components/CreatePoll';
 import ManagePoll from '@/components/ManagePoll';
 import VoteNew from '@/components/VoteNew';
 
-
 Vue.use(Router);
 Vue.use(ElementUI);
 
