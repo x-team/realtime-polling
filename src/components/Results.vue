@@ -3,25 +3,25 @@
     <div v-if="!this.isLoading">
       <el-col :span="12">
         <h2 class="grid-content blue">
-          {{ activeQuestion.first.value }}
+          {{ question.first.value }}
         </h2>
         <h3 class="grid-content">
-          {{ activeQuestion.first.votes }} votes
+          {{ question.first.votes }} votes
         </h3>
       </el-col>
       <el-col :span="12">
         <h2 class="grid-content green">
-          {{ activeQuestion.second.value }}
+          {{ question.second.value }}
         </h2>
         <h3 class="grid-content">
-          {{ activeQuestion.second.votes }} votes
+          {{ question.second.votes }} votes
         </h3>
       </el-col>
       <el-col :span="24" class="bar-container">
-        <div v-bind:style="{width: activeQuestion.first.votes / (activeQuestion.first.votes + activeQuestion.second.votes) * 100 + '%' }" class="bar bg-blue"/>
-        <div v-bind:style="{width: activeQuestion.second.votes / (activeQuestion.first.votes + activeQuestion.second.votes) * 100 + '%' }" class="bar bg-green"/>
+        <div v-bind:style="{width: question.first.votes / (question.first.votes + question.second.votes) * 100 + '%' }" class="bar bg-blue"/>
+        <div v-bind:style="{width: question.second.votes / (question.first.votes + question.second.votes) * 100 + '%' }" class="bar bg-green"/>
       </el-col>
-      You voted for <span v-bind:class="{ 'blue': isFirstChoice(choice), 'green': isSecondChoice(choice)}">{{ activeQuestion[choice].value }}</span>
+      <p v-if="choice">You voted for <span v-bind:class="{ 'blue': isFirstChoice(choice), 'green': isSecondChoice(choice)}">{{ question[choice].value }}</span></p>
     </div>
   </div>
 </template>
@@ -31,16 +31,11 @@ import db from '../services/firebase';
 /* eslint-disable */
 export default {
   name: 'Results',
-  props: ['pollId', 'choice'],
+  props: ['question', 'choice'],
   data() {
     return {
       isLoading: false,
     };
-  },
-  computed: {
-    activeQuestion() {
-      return this.poll.questions.filter(question => (question.isActive))[0];
-    },
   },
   firebase() {
     return {
