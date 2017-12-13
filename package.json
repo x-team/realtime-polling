@@ -12,8 +12,10 @@
     "postinstall": "npm run build"
   },
   "dependencies": {
+    "dotenv": "^4.0.0",
     "element-ui": "^2.0.7",
     "firebase": "^4.6.2",
+    "fs": "0.0.1-security",
     "vue": "^2.5.2",
     "vue-router": "^3.0.1",
     "vuefire": "^1.4.4"

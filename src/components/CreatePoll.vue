@@ -8,7 +8,7 @@
         <el-button type="primary" @click="createPoll">Activate</el-button>
       </el-form-item>
     </el-form>
-    <h3>http://localhost:8080/#/votes/{{ poll.id }}</h3>
+    <h3>{{ this.hostUrl }}</h3>
     <p>This is your share link</p>
   </div>
 </template>
@@ -24,6 +24,8 @@ export default {
   data() {
     return {
       isLoading: true,
+      port: (process.env.SHOW_PORT) ? `:${process.env.PORT}` : '',
+      host: process.env.HOST,
       poll: {
         id: polls.push().key,
         name: '',
@@ -33,6 +35,11 @@ export default {
       },
     };
   },
+  computed: {
+    hostUrl() {
+      return `${this.host}${this.port}/#/vote-new/${this.poll.id}`;
+    },
+  },
   components: {
     ResultsNew,
   },
@@ -41,6 +48,16 @@ export default {
       source: polls,
       readyCallback() {
         this.isLoading = false;
+        // eslint-disable-next-line
+        console.log(process.env.NODE_ENV);
+        // eslint-disable-next-line
+        console.log(process.env.FIREBASE_URL);
+        // eslint-disable-next-line
+        console.log(process.env.HOST);
+        // eslint-disable-next-line
+        console.log(process.env.SHOW_PORT);
+        // eslint-disable-next-line
+        console.log(process.env.PORT);
       },
     },
   },
