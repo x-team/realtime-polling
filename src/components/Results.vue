@@ -21,14 +21,14 @@
         <div v-bind:style="{width: activeQuestion.first.votes / (activeQuestion.first.votes + activeQuestion.second.votes) * 100 + '%' }" class="bar bg-blue"/>
         <div v-bind:style="{width: activeQuestion.second.votes / (activeQuestion.first.votes + activeQuestion.second.votes) * 100 + '%' }" class="bar bg-green"/>
       </el-col>
-      You voted for <span v-bind:class="{ 'blue': isFirstChoice(activeQuestion, choice), 'green': isSecondChoice(activeQuestion, choice)}">{{ activeQuestion[choice].value }}</span>
+      You voted for <span v-bind:class="{ 'blue': isFirstChoice(choice), 'green': isSecondChoice(choice)}">{{ activeQuestion[choice].value }}</span>
     </div>
   </div>
 </template>
 <script>
 
 import db from '../services/firebase';
-
+/* eslint-disable */
 export default {
   name: 'Results',
   props: ['pollId', 'choice'],
@@ -54,11 +54,11 @@ export default {
     };
   },
   methods: {
-    isFirstChoice(activeQuestion, choice) {
-      return activeQuestion[choice].value === activeQuestion.first.value;
+    isFirstChoice(choice) {
+      return choice === 'first';
     },
-    isSecondChoice(activeQuestion, choice) {
-      return activeQuestion[choice].value === activeQuestion.second.value;
+    isSecondChoice(choice) {
+      return choice === 'second';
     },
   },
 };
@@ -74,6 +74,9 @@ export default {
 }
 .blue {
   color: #409EFF;
+}
+span {
+  font-weight: bold;
 }
 .bg-green {
   background-color: #67C23A;
