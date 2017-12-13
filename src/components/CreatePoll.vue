@@ -5,12 +5,12 @@
         <el-input v-model="poll.name" placeholder="Poll name"></el-input>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="createPoll">Activate</el-button>
+        <el-button type="success" @click="createPoll">Activate</el-button>
       </el-form-item>
     </el-form>
     <h3>{{ this.voteUrl }}</h3>
     <el-button type="primary" @click="copyToClipboard">Copy URL to clipboard</el-button>
-    <p><a :href="this.voteUrl" target="_blank">Open</a></p>
+    <p><a :href="this.voteUrl" target="_blank" @click="copyToClipboard">Open</a></p>
     <p>This is your share link</p>
   </div>
 </template>
