@@ -18,9 +18,10 @@
       <li v-for="question in reverseItems">
         <el-card class="box-card" v-bind:class="{ active: question.isActive }">
           <el-row>
-            {{ question.first.value }} or {{ question.second.value }}
+            <Results :question="question"></Results>
           </el-row>
         </el-card>
+
       </li>
     </ul>
   </div>
@@ -28,6 +29,7 @@
 <script>
 
 import db from '../services/firebase';
+import Results from './Results';
 
 const polls = db.ref('/');
 
@@ -64,6 +66,9 @@ export default {
     reverseItems() {
       return this.poll.questions.slice().reverse();
     },
+  },
+  components: {
+    Results,
   },
   methods: {
     addQuestion() {
@@ -119,7 +124,7 @@ export default {
 }
 
 .active {
-  background-color: #67c23a;
+  background-color: lightGreen;
   color: white;
   font-weight: bold;
 }
