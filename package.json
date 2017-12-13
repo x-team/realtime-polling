@@ -12,6 +12,7 @@
     "postinstall": "npm run build"
   },
   "dependencies": {
+    "copy-to-clipboard": "^3.0.8",
     "dotenv": "^4.0.0",
     "element-ui": "^2.0.7",
     "firebase": "^4.6.2",
