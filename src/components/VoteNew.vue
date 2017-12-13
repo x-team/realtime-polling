@@ -49,16 +49,18 @@ export default {
       const pollRef = db.ref().child(`/${this.$route.params.id}`);
       this.isVoted = true;
       pollRef.transaction((poll) => {
+        const updatedPoll = poll;
         if (poll) {
-          const results = poll.questions.map((question) => {
+          const results = poll.questions.map(() => {
+            const updatedQuestion = question;
             if (question.isActive) {
-              question[choice].votes += 1;
+              updatedQuestion[choice].votes += 1;
             }
-            return question;
+            return updatedQuestion;
           });
-          poll.questions = results;
+          updatedPoll.questions = results;
         }
-        return poll;
+        return updatedPoll;
       });
     },
   },
