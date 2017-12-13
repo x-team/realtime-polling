@@ -11,7 +11,8 @@
       </el-form-item>
       <el-form-item>
         <el-button :disabled="!poll.isActive" type="primary" @click="addQuestion">Publish</el-button>
-        <el-button :disabled="!poll.isActive" type="danger" @click="closePoll">Close Poll</el-button>
+        <el-button v-if="poll.isActive" type="danger" @click="closePoll">Close Poll</el-button>
+        <el-button v-else type="success" @click="reopenPoll">Re-open Poll</el-button>
       </el-form-item>
     </el-form>
     <ul class="polls" v-loading="isLoading" v-if="poll.hasQuestions">
@@ -103,6 +104,11 @@ export default {
     closePoll() {
       polls.child(this.poll.id).update({
         isActive: false,
+      });
+    },
+    reopenPoll() {
+      polls.child(this.poll.id).update({
+        isActive: true,
       });
     },
   },
