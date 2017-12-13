@@ -3,7 +3,8 @@
   "scripts": {},
   "env": {
     "NPM_CONFIG_PRODUCTION": "false",
-    "NODE_ENV": "development"
+    "NODE_ENV": "development",
+    "FIREBASE_URL": "https://realtime-poll-40c84.firebaseio.com"
   },
   "formation": {},
   "addons": [],
