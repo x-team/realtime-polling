@@ -1,17 +1,20 @@
 <template>
   <div class="poll" v-loading="isLoading">
-    <el-card class="box-card" v-if="!this.isLoading">
+    <el-card class="box-card" v-if="!this.isLoading && activeQuestion">
       <div v-if="!this.isVoted">
-        <el-button type="text" @click="vote(poll, 'first')">{{poll.first.value}}</el-button>
-        <el-button type="text" @click="vote(poll, 'second')">{{poll.second.value}}</el-button>
+        <el-button type="text" @click="vote(activeQuestion, 'first')">{{activeQuestion.first.value}}</el-button>
+        <span>or</span>
+        <el-button type="text" @click="vote(activeQuestion, 'second')">{{activeQuestion.second.value}}</el-button>
       </div>
       <el-row v-else>
-        <results :pollId="poll['.key']"></results>
+        <Results :pollId="poll['.key']"></Results>
       </el-row>
     </el-card>
+    <div v-else>Please wait for first question.</div>
   </div>
 </template>
 <script>
+
 import db from '../services/firebase';
 import Results from './Results';
 
@@ -21,6 +24,7 @@ export default {
     return {
       isLoading: true,
       isVoted: false,
+      poolOFQuestions: 0,
     };
   },
   components: {
@@ -32,23 +36,44 @@ export default {
         source: db.ref().child(`/${this.$route.params.id}`),
         asObject: true,
         readyCallback() {
-          this.isLoading = false;
+          const pollRef = db.ref().child(`/${this.$route.params.id}`);
+          pollRef.on('value', (snapshot) => {
+            if (snapshot.val().questions && snapshot.val().questions.length > 0) {
+              this.isLoading = false;
+              if (this.poolOFQuestions !== snapshot.val().questions.length) {
+                this.poolOFQuestions = snapshot.val().questions.length;
+                this.isVoted = false;
+              }
+            }
+          });
         },
       },
     };
   },
+  computed: {
+    activeQuestion() {
+      return (this.poll.questions) ?
+        this.poll.questions.filter(question => (question.isActive))[0] : null;
+    },
+  },
   methods: {
-    vote(poll, choice) {
-      const dbRef = db.ref().child(`/${this.$route.params.id}`);
+    vote(question, choice) {
+      const pollRef = db.ref().child(`/${this.$route.params.id}`);
       this.isVoted = true;
-
-      dbRef.transaction(pollRef => ({
-        ...pollRef,
-        [choice]: {
-          value: pollRef[choice].value,
-          votes: pollRef[choice].votes + 1,
-        },
-      }));
+      pollRef.transaction((poll) => {
+        const updatedPoll = poll;
+        if (poll) {
+          const results = poll.questions.map((newQuestion) => {
+            const updatedQuestion = newQuestion;
+            if (newQuestion.isActive) {
+              updatedQuestion[choice].votes += 1;
+            }
+            return updatedQuestion;
+          });
+          updatedPoll.questions = results;
+        }
+        return updatedPoll;
+      });
     },
   },
 };
