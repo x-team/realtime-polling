@@ -7,7 +7,7 @@
         <el-button type="text" @click="vote(activeQuestion, 'second')">{{activeQuestion.second.value}}</el-button>
       </div>
       <el-row v-else>
-        <Results :pollId="poll['.key']"></Results>
+        <Results :pollId="poll['.key']" :choice="choice"></Results>
       </el-row>
     </el-card>
     <div v-else>Please wait for first question.</div>
@@ -60,6 +60,7 @@ export default {
     vote(question, choice) {
       const pollRef = db.ref().child(`/${this.$route.params.id}`);
       this.isVoted = true;
+      this.choice = choice;
       pollRef.transaction((poll) => {
         const updatedPoll = poll;
         if (poll) {

@@ -21,6 +21,7 @@
         <div v-bind:style="{width: activeQuestion.first.votes / (activeQuestion.first.votes + activeQuestion.second.votes) * 100 + '%' }" class="bar bg-red"/>
         <div v-bind:style="{width: activeQuestion.second.votes / (activeQuestion.first.votes + activeQuestion.second.votes) * 100 + '%' }" class="bar bg-blue"/>
       </el-col>
+      You voted for {{ activeQuestion[choice].value }}
     </div>
   </div>
 </template>
@@ -30,7 +31,7 @@ import db from '../services/firebase';
 
 export default {
   name: 'Results',
-  props: ['pollId', 'questionId'],
+  props: ['pollId', 'choice'],
   data() {
     return {
       isLoading: false,
