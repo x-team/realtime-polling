@@ -24,6 +24,7 @@ export default {
     return {
       isLoading: true,
       isVoted: false,
+      poolOFQuestions: 0,
     };
   },
   components: {
@@ -39,6 +40,10 @@ export default {
           pollRef.on('value', (snapshot) => {
             if (snapshot.val().questions && snapshot.val().questions.length > 0) {
               this.isLoading = false;
+              if (this.poolOFQuestions !== snapshot.val().questions.length) {
+                this.poolOFQuestions = snapshot.val().questions.length;
+                this.isVoted = false;
+              }
             }
           });
         },
@@ -58,9 +63,9 @@ export default {
       pollRef.transaction((poll) => {
         const updatedPoll = poll;
         if (poll) {
-          const results = poll.questions.map(() => {
-            const updatedQuestion = question;
-            if (question.isActive) {
+          const results = poll.questions.map((newQuestion) => {
+            const updatedQuestion = newQuestion;
+            if (newQuestion.isActive) {
               updatedQuestion[choice].votes += 1;
             }
             return updatedQuestion;
