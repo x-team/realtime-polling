@@ -30,8 +30,8 @@ export default {
   data() {
     return {
       isLoading: true,
-      isVoted: false,
       poolOFQuestions: 0,
+      choice: null,
     };
   },
   components: {
@@ -49,7 +49,6 @@ export default {
             if (snapshot.val() && snapshot.val().questions && snapshot.val().questions.length > 0) {
               if (this.poolOFQuestions !== snapshot.val().questions.length) {
                 this.poolOFQuestions = snapshot.val().questions.length;
-                this.isVoted = false;
               }
             }
           });
@@ -62,11 +61,14 @@ export default {
       return (this.poll.questions) ?
         this.poll.questions.filter(question => (question.isActive))[0] : null;
     },
+    isVoted() {
+      const cookieExists = document.cookie.match(`${this.poll.id}${this.activeQuestion.id}`);
+      return (cookieExists && cookieExists.index > -1);
+    },
   },
   methods: {
     vote(question, choice) {
       const pollRef = db.ref().child(`/${this.$route.params.id}`);
-      this.isVoted = true;
       this.choice = choice;
       pollRef.transaction((poll) => {
         const updatedPoll = poll;
@@ -82,6 +84,7 @@ export default {
         }
         return updatedPoll;
       });
+      document.cookie = `${this.poll.id}${question.id}=1`;
     },
   },
 };

@@ -29,6 +29,8 @@
 </template>
 <script>
 
+
+import uuidv1 from 'uuid/v1';
 import db from '../services/firebase';
 import Results from './Results';
 
@@ -40,6 +42,7 @@ export default {
     return {
       isLoading: true,
       question: {
+        id: uuidv1(),
         isActive: true,
         first: {
           value: '',
@@ -90,6 +93,7 @@ export default {
       });
 
       this.question = {
+        id: uuidv1(),
         isActive: true,
         first: {
           value: '',
