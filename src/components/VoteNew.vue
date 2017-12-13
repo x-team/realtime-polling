@@ -7,14 +7,14 @@
         <el-button type="text" @click="vote(activeQuestion, 'second')">{{activeQuestion.second.value}}</el-button>
       </div>
       <el-row v-else>
-        <results :pollId="poll['.key']"></results>
+        <ResultsNew :pollId="poll['.key']"></ResultsNew>
       </el-row>
     </el-card>
   </div>
 </template>
 <script>
 import db from '../services/firebase';
-import Results from './Results';
+import ResultsNew from './ResultsNew';
 /* eslint-disable */
 export default {
   name: 'VoteNew',
@@ -25,7 +25,7 @@ export default {
     };
   },
   components: {
-    Results,
+    ResultsNew,
   },
   firebase() {
     return {

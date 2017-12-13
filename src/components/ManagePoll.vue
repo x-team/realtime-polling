@@ -27,9 +27,7 @@
 </template>
 <script>
 
-/* eslint-disable */
 import db from '../services/firebase';
-import ResultsNew from './ResultsNew';
 
 const polls = db.ref('/');
 
@@ -51,9 +49,6 @@ export default {
       },
     };
   },
-  components: {
-    ResultsNew,
-  },
   firebase() {
     return {
       poll: {
@@ -68,7 +63,7 @@ export default {
   computed: {
     reverseItems() {
       return this.poll.questions.slice().reverse();
-    }
+    },
   },
   methods: {
     addQuestion() {
@@ -76,7 +71,7 @@ export default {
         this.poll.hasQuestions = true;
         this.poll.questions = [];
       }
-      for (let i=0;i<this.poll.questions.length;i+=1) {
+      for (let i = 0; i < this.poll.questions.length; i += 1) {
         this.poll.questions[i].isActive = false;
       }
       this.poll.questions.push(this.question);

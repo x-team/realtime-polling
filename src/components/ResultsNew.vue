@@ -3,19 +3,23 @@
     <div v-if="!this.isLoading">
       <el-col :span="12">
         <h2 class="grid-content">
-          {{ question.first.value }}
+          {{ activeQuestion.first.value }}
         </h2>
         <h3 class="grid-content">
-          {{ question.first.votes }} votes
+          {{ activeQuestion.first.votes }} votes
         </h3>
       </el-col>
       <el-col :span="12">
         <h2 class="grid-content">
-          {{ question.second.value }}
+          {{ activeQuestion.second.value }}
         </h2>
         <h3 class="grid-content">
-          {{ question.second.votes }} votes
+          {{ activeQuestion.second.votes }} votes
         </h3>
+      </el-col>
+      <el-col :span="24" class="bar-container">
+        <div v-bind:style="{width: activeQuestion.first.votes / (activeQuestion.first.votes + activeQuestion.second.votes) * 100 + '%' }" class="bar bg-red"/>
+        <div v-bind:style="{width: activeQuestion.second.votes / (activeQuestion.first.votes + activeQuestion.second.votes) * 100 + '%' }" class="bar bg-blue"/>
       </el-col>
     </div>
   </div>
@@ -31,6 +35,11 @@ export default {
     return {
       isLoading: false,
     };
+  },
+  computed: {
+    activeQuestion() {
+      return this.poll.questions.filter(question => (question.isActive))[0];
+    },
   },
   firebase() {
     return {
