@@ -15,7 +15,6 @@
 </template>
 <script>
 
-import ResultsNew from './ResultsNew';
 import db from '../services/firebase';
 
 const polls = db.ref('/');
@@ -36,11 +35,8 @@ export default {
   },
   computed: {
     voteUrl() {
-      return `${location.href}vote-new/${this.poll.id}`;
+      return `${location.href}vote/${this.poll.id}`;
     },
-  },
-  components: {
-    ResultsNew,
   },
   firebase: {
     polls: {
