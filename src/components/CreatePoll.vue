@@ -18,14 +18,12 @@ import ResultsNew from './ResultsNew';
 import db from '../services/firebase';
 
 const polls = db.ref('/');
-
+/* eslint-disable */
 export default {
   name: 'CreatePoll',
   data() {
     return {
       isLoading: true,
-      port: (process.env.SHOW_PORT) ? `:${process.env.PORT}` : '',
-      host: process.env.HOST,
       poll: {
         id: polls.push().key,
         name: '',
@@ -37,7 +35,7 @@ export default {
   },
   computed: {
     hostUrl() {
-      return `${this.host}${this.port}/vote-new/${this.poll.id}`;
+      return `${location.href}vote-new/${this.poll.id}`;
     },
   },
   components: {
