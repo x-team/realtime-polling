@@ -15,7 +15,7 @@
 <script>
 import db from '../services/firebase';
 import Results from './Results';
-
+/* eslint-disable */
 export default {
   name: 'VoteNew',
   data() {
@@ -45,16 +45,20 @@ export default {
   },
   methods: {
     vote(question, choice) {
-      const dbRef = db.ref().child(`/${this.$route.params.id}`);
+      const pollRef = db.ref().child(`/${this.$route.params.id}`);
       this.isVoted = true;
-
-      dbRef.transaction(pollRef => ({
-        ...pollRef,
-        [choice]: {
-          value: pollRef[choice].value,
-          votes: pollRef[choice].votes + 1,
-        },
-      }));
+      pollRef.transaction((poll) => {
+        if (poll) {
+          const results = poll.questions.map((question) => {
+            if (question.isActive) {
+              question[choice].votes += 1;
+            }
+            return question;
+          });
+          poll.questions = results;
+        }
+        return poll;
+      });
     },
   },
 };
