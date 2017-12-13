@@ -18,7 +18,7 @@ import ResultsNew from './ResultsNew';
 import db from '../services/firebase';
 
 const polls = db.ref('/');
-/* eslint-disable */
+
 export default {
   name: 'CreatePoll',
   data() {
