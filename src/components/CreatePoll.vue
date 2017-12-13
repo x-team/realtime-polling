@@ -37,7 +37,7 @@ export default {
   },
   computed: {
     hostUrl() {
-      return `${this.host}${this.port}/#/vote-new/${this.poll.id}`;
+      return `${this.host}${this.port}/vote-new/${this.poll.id}`;
     },
   },
   components: {
@@ -48,16 +48,6 @@ export default {
       source: polls,
       readyCallback() {
         this.isLoading = false;
-        // eslint-disable-next-line
-        console.log(process.env.NODE_ENV);
-        // eslint-disable-next-line
-        console.log(process.env.FIREBASE_URL);
-        // eslint-disable-next-line
-        console.log(process.env.HOST);
-        // eslint-disable-next-line
-        console.log(process.env.SHOW_PORT);
-        // eslint-disable-next-line
-        console.log(process.env.PORT);
       },
     },
   },

@@ -12,6 +12,7 @@ Vue.use(Router);
 Vue.use(ElementUI);
 
 export default new Router({
+  mode: 'history',
   routes: [
     {
       path: '/vote/:id',
@@ -22,7 +23,7 @@ export default new Router({
       name: 'AddPoll',
       component: AddPoll,
     }, {
-      path: '/create',
+      path: '/',
       name: 'CreatePoll',
       component: CreatePoll,
     }, {
