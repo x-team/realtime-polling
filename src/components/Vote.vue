@@ -1,16 +1,23 @@
 <template>
   <div class="poll" v-loading="isLoading">
-    <el-card class="box-card" v-if="!this.isLoading && activeQuestion">
-      <div v-if="!this.isVoted">
-        <el-button type="text" @click="vote(activeQuestion, 'first')">{{activeQuestion.first.value}}</el-button>
-        <span>or</span>
-        <el-button type="text" @click="vote(activeQuestion, 'second')">{{activeQuestion.second.value}}</el-button>
+    <div v-if="poll.isActive">
+      <el-card class="box-card" v-if="!this.isLoading && activeQuestion">
+        <div v-if="!this.isVoted">
+          <el-button type="text" @click="vote(activeQuestion, 'first')">{{activeQuestion.first.value}}</el-button>
+          <span>or</span>
+          <el-button type="text" @click="vote(activeQuestion, 'second')">{{activeQuestion.second.value}}</el-button>
+        </div>
+        <el-row v-else>
+          <Results :pollId="poll['.key']" :choice="choice"></Results>
+        </el-row>
+      </el-card>
+      <div v-else>
+        Waiting for question.
       </div>
-      <el-row v-else>
-        <Results :pollId="poll['.key']" :choice="choice"></Results>
-      </el-row>
-    </el-card>
-    <div v-else>Please wait for first question.</div>
+    </div>
+    <div v-else>
+      Poll is not active.
+    </div>
   </div>
 </template>
 <script>
@@ -36,10 +43,10 @@ export default {
         source: db.ref().child(`/${this.$route.params.id}`),
         asObject: true,
         readyCallback() {
+          this.isLoading = false;
           const pollRef = db.ref().child(`/${this.$route.params.id}`);
           pollRef.on('value', (snapshot) => {
-            if (snapshot.val().questions && snapshot.val().questions.length > 0) {
-              this.isLoading = false;
+            if (snapshot.val() && snapshot.val().questions && snapshot.val().questions.length > 0) {
               if (this.poolOFQuestions !== snapshot.val().questions.length) {
                 this.poolOFQuestions = snapshot.val().questions.length;
                 this.isVoted = false;

@@ -2,7 +2,7 @@
   <div v-loading="isLoading">
     <div v-if="!this.isLoading">
       <el-col :span="12">
-        <h2 class="grid-content">
+        <h2 class="grid-content blue">
           {{ activeQuestion.first.value }}
         </h2>
         <h3 class="grid-content">
@@ -10,7 +10,7 @@
         </h3>
       </el-col>
       <el-col :span="12">
-        <h2 class="grid-content">
+        <h2 class="grid-content green">
           {{ activeQuestion.second.value }}
         </h2>
         <h3 class="grid-content">
@@ -18,17 +18,17 @@
         </h3>
       </el-col>
       <el-col :span="24" class="bar-container">
-        <div v-bind:style="{width: activeQuestion.first.votes / (activeQuestion.first.votes + activeQuestion.second.votes) * 100 + '%' }" class="bar bg-red"/>
-        <div v-bind:style="{width: activeQuestion.second.votes / (activeQuestion.first.votes + activeQuestion.second.votes) * 100 + '%' }" class="bar bg-blue"/>
+        <div v-bind:style="{width: activeQuestion.first.votes / (activeQuestion.first.votes + activeQuestion.second.votes) * 100 + '%' }" class="bar bg-blue"/>
+        <div v-bind:style="{width: activeQuestion.second.votes / (activeQuestion.first.votes + activeQuestion.second.votes) * 100 + '%' }" class="bar bg-green"/>
       </el-col>
-      You voted for {{ activeQuestion[choice].value }}
+      You voted for <span v-bind:class="{ 'blue': isFirstChoice(choice), 'green': isSecondChoice(choice)}">{{ activeQuestion[choice].value }}</span>
     </div>
   </div>
 </template>
 <script>
 
 import db from '../services/firebase';
-
+/* eslint-disable */
 export default {
   name: 'Results',
   props: ['pollId', 'choice'],
@@ -53,6 +53,14 @@ export default {
       },
     };
   },
+  methods: {
+    isFirstChoice(choice) {
+      return choice === 'first';
+    },
+    isSecondChoice(choice) {
+      return choice === 'second';
+    },
+  },
 };
 </script>
 <style scoped>
@@ -61,11 +69,20 @@ export default {
   margin: auto;
   list-style: none;
 }
-.bg-red {
-  background-color: #409EFF;
+.green {
+  color: #67C23A;
+}
+.blue {
+  color: #409EFF;
+}
+span {
+  font-weight: bold;
+}
+.bg-green {
+  background-color: #67C23A;
 }
 .bg-blue {
-  background-color: #67C23A;
+  background-color: #409EFF;
 }
 .bar {
   height: 20px;

@@ -1,16 +1,17 @@
 <template>
   <div class="poll" v-loading="isLoading">
-    <h2>Add question</h2>
+    <h2>Add question to "{{ poll.name }}" poll</h2>
     <el-form :inline="true" :model="question" class="demo-form-inline" v-if="!this.isLoading">
       <el-form-item>
-        <el-input v-model="question.first.value" placeholder="Option A"></el-input>
+        <el-input :disabled="!poll.isActive" v-model="question.first.value" placeholder="Option A"></el-input>
       </el-form-item>
       <el-form-item>OR</el-form-item>
        <el-form-item>
-        <el-input v-model="question.second.value" placeholder="Option B"></el-input>
+        <el-input :disabled="!poll.isActive" v-model="question.second.value" placeholder="Option B"></el-input>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="addQuestion">Publish</el-button>
+        <el-button :disabled="!poll.isActive" type="primary" @click="addQuestion">Publish</el-button>
+        <el-button :disabled="!poll.isActive" type="danger" @click="closePoll">Close Poll</el-button>
       </el-form-item>
     </el-form>
     <ul class="polls" v-loading="isLoading" v-if="poll.hasQuestions">
@@ -94,6 +95,11 @@ export default {
         },
       };
     },
+    closePoll() {
+      polls.child(this.poll.id).update({
+        isActive: false,
+      });
+    },
   },
 };
 </script>
@@ -113,6 +119,8 @@ export default {
 }
 
 .active {
-  background-color: #98FB98;
+  background-color: #67c23a;
+  color: white;
+  font-weight: bold;
 }
 </style>
