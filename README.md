@@ -8,6 +8,9 @@ Realtime voting app to use for the X-Mas Party
 # install dependencies
 npm install
 
+# Copy .env template
+cp .env.TEMPLATE .env
+
 # serve with hot reload at localhost:8080
 npm run dev
 

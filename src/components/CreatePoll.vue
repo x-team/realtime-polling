@@ -9,12 +9,14 @@
       </el-form-item>
     </el-form>
     <h3>{{ this.voteUrl }}</h3>
-    <p><a :href="this.voteUrl" target="_blank">open</a></p>
+    <el-button type="primary" @click="copyToClipboard">Copy URL to clipboard</el-button>
+    <p><a :href="this.voteUrl" target="_blank">Open</a></p>
     <p>This is your share link</p>
   </div>
 </template>
 <script>
 
+import copy from 'copy-to-clipboard';
 import ResultsNew from './ResultsNew';
 import db from '../services/firebase';
 
@@ -55,6 +57,9 @@ export default {
       this.poll.isActive = true;
       polls.child(this.poll.id).set(this.poll);
       this.$router.push(`/polls/${this.poll.id}`);
+    },
+    copyToClipboard() {
+      copy(this.voteUrl);
     },
   },
 };
