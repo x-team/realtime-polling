@@ -4,9 +4,9 @@
       <img :style="{ backgroundImage: `url(${poll.backgroundImageUrl})` }" class="background-image" />
       <el-card class="box-card" v-if="!this.isLoading && activeQuestion">
         <div v-if="!this.isVoted">
-          <el-button type="text" @click="vote(activeQuestion, 'first')">{{activeQuestion.first.value}}</el-button>
+          <el-button id="first-option" type="text" @click="vote(activeQuestion, 'first')">{{activeQuestion.first.value}}</el-button>
           <span>or</span>
-          <el-button type="text" @click="vote(activeQuestion, 'second')">{{activeQuestion.second.value}}</el-button>
+          <el-button id="second-option" type="text" @click="vote(activeQuestion, 'second')">{{activeQuestion.second.value}}</el-button>
         </div>
         <el-row v-else>
           <Results :question="activeQuestion" :choice="choice"></Results>
