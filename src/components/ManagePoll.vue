@@ -90,6 +90,7 @@ export default {
         isActive: this.poll.isActive,
         hasQuestions: this.poll.hasQuestions,
         questions: this.poll.questions,
+        backgroundImageUrl: this.poll.backgroundImageUrl,
       });
 
       this.question = {
