@@ -5,6 +5,9 @@
         <el-input v-model="poll.name" placeholder="Poll name"></el-input>
       </el-form-item>
       <el-form-item>
+        <el-input v-model="poll.backgroundImageUrl" placeholder="Background image URL"></el-input>
+      </el-form-item>
+      <el-form-item>
         <el-button type="success" @click="createPoll">Activate</el-button>
       </el-form-item>
     </el-form>
@@ -29,6 +32,7 @@ export default {
       poll: {
         id: polls.push().key,
         name: '',
+        backgroundImageUrl: '',
         isActive: false,
         hasQuestions: false,
         questions: [],

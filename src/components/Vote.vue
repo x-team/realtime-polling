@@ -1,6 +1,7 @@
 <template>
   <div class="poll" v-loading="isLoading">
     <div v-if="poll.isActive">
+      <img :style="{ backgroundImage: `url(${poll.backgroundImageUrl})` }" class="background-image" />
       <el-card class="box-card" v-if="!this.isLoading && activeQuestion">
         <div v-if="!this.isVoted">
           <el-button type="text" @click="vote(activeQuestion, 'first')">{{activeQuestion.first.value}}</el-button>
@@ -46,6 +47,7 @@ export default {
           this.isLoading = false;
           const pollRef = db.ref().child(`/${this.$route.params.id}`);
           pollRef.on('value', (snapshot) => {
+            console.log(snapshot.val());
             if (snapshot.val() && snapshot.val().questions && snapshot.val().questions.length > 0) {
               if (this.poolOFQuestions !== snapshot.val().questions.length) {
                 this.poolOFQuestions = snapshot.val().questions.length;
@@ -94,5 +96,14 @@ export default {
   max-width: 600px;
   margin: auto;
   list-style: none;
+}
+.background-image {
+  position: absolute;
+  width: 100%;
+  height: 100vh;
+  background-size: cover;
+  top: 0;
+  left: 0;
+  z-index: -1000;
 }
 </style>
