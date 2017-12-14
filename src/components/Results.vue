@@ -82,6 +82,7 @@ span {
 .bar {
   height: 20px;
   margin-top: 5px;
+  transition: width 2s;
 }
 .bar-container {
   display: flex;
