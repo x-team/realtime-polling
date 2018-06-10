@@ -1,0 +1,22 @@
+{
+  "rules": {
+    ".read": true,
+    ".write": true,
+    "$pollId": {
+      "questions": {
+        "$questionId": {
+          "first": {
+            "votes": {
+              ".validate": "newData.isNumber() && newData.val() % 1 === 0.0 && newData.val() - data.val() <= 1"
+            }
+          },
+          "second": {
+            "votes": {
+              ".validate": "newData.isNumber() && newData.val() % 1 === 0.0 && newData.val() - data.val() <= 1"
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -35,7 +35,7 @@ export default {
         backgroundImageUrl: '',
         isActive: false,
         hasQuestions: false,
-        questions: [],
+        questions: {},
       },
     };
   },

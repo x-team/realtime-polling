@@ -15,11 +15,13 @@ export default new Router({
       path: '/vote/:id',
       name: 'Vote',
       component: Vote,
-    }, {
+    },
+    {
       path: '/',
       name: 'CreatePoll',
       component: CreatePoll,
-    }, {
+    },
+    {
       path: '/polls/:id',
       name: 'ManagePoll',
       component: ManagePoll,

@@ -68,7 +68,7 @@ export default {
   },
   computed: {
     reverseItems() {
-      return this.poll.questions.slice().reverse();
+      return Object.values(this.poll.questions).reverse();
     },
   },
   components: {
@@ -78,12 +78,15 @@ export default {
     addQuestion() {
       if (!this.poll.hasQuestions) {
         this.poll.hasQuestions = true;
-        this.poll.questions = [];
+        this.poll.questions = {};
       }
-      for (let i = 0; i < this.poll.questions.length; i += 1) {
+
+      for (let i = 0; i < Object.keys(this.poll.questions).length; i += 1) {
         this.poll.questions[i].isActive = false;
       }
-      this.poll.questions.push(this.question);
+
+      this.poll.questions[Object.keys(this.poll.questions).length] = this.question;
+
       polls.child(this.poll.id).set({
         id: this.poll.id,
         name: this.poll.name,
